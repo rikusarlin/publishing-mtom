@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+	targetNamespace="http://www.publishing.fi/skeemat/vahva/2018/06/08"
+	xmlns:publishing="http://www.publishing.fi/skeemat/vahva/2018/06/08"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
+	elementFormDefault="qualified">
+	<xs:element name="JulkaisuPyyntoRequest"
+		type="publishing:JulkaisuPyyntoRequestTyyppi" />
+	<xs:element name="JulkaisuLupaRequest"
+		type="publishing:JulkaisuLupaRequestTyyppi" />
+	<xs:element name="KorjausRequest"
+		type="publishing:KorjausRequestTyyppi" />
+	<xs:element name="SiirtoResponse"
+		type="publishing:KuittausTyyppi" />
+	<xs:element name="HaeJulkaisutRequest"
+		type="publishing:HaeJulkaisutRequestTyyppi" />
+	<xs:element name="HaeJulkaisutResponse"
+		type="publishing:HaeJulkaisutResponseTyyppi" />
+		
+	<xs:complexType name="JulkaisuPyyntoRequestTyyppi">
+		<xs:sequence>
+			<xs:element name="julkaisuPyynto"
+				type="publishing:JulkaisuPyyntoTyyppi" />
+			<xs:element name="asiakirjat"
+				type="publishing:JulkaisuPyyntoAsiakirjaListaTyyppi" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="JulkaisuLupaRequestTyyppi">
+		<xs:sequence>
+			<xs:element name="julkaisuLupa"
+				type="publishing:JulkaisuLupaTyyppi" />
+			<xs:element name="asiakirjat"
+				type="publishing:JulkaisuLupaAsiakirjaListaTyyppi" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="KorjausRequestTyyppi">
+		<xs:sequence>
+			<xs:element name="korjaus"
+				type="publishing:KorjausAsiakirjaTyyppi" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HaeJulkaisutRequestTyyppi">
+		<xs:annotation>
+			<xs:documentation xml:lang="fi">
+				Julkaisuja voidaan hakea joko tunnisteella tai muutosaikaleimalla.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="tunniste" type="xs:string" minOccurs="0"/>
+			<xs:element name="edellinenAikaleima" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HaeJulkaisutResponseTyyppi">
+		<xs:sequence>
+			<xs:element name="julkaisut" type="publishing:JulkaisuTiedotListaTyyppi"/>
+			<xs:element name="siirtoResponse" type="publishing:KuittausTyyppi"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="JulkaisuTiedotListaTyyppi">
+		<xs:sequence>
+			<xs:element name="julkaisu" type="publishing:JulkaisuTiedotTyyppi" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="JulkaisuTiedotTyyppi">
+		<xs:sequence>
+			<xs:element name="tiedostoNimi" type="xs:string" />
+			<xs:element name="julkaisuMetatiedot" type="publishing:JulkaisuMetatiedotTyyppi" />
+			<xs:element name="tiedosto" type="xs:base64Binary"
+				xmime:expectedContentTypes="application/octet-stream" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="JulkaisuMetatiedotTyyppi">
+		<xs:sequence>
+			<xs:element name="tunniste" type="xs:string" />
+			<xs:element name="asiaTunniste" type="xs:string"/>
+			<xs:element name="asiakirjaTunniste" type="xs:string"/>
+			<xs:element name="toimituksenTyyppi" type="publishing:ToimituksenTyyppiKoodi"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="JulkaisuLupaTyyppi">
+		<xs:sequence>
+			<xs:element name="vastaanottaja" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="fi">Vakiotieto,
+						"Julkaisija"</xs:documentation>
+					<!-- Oli ennen "Painotalo", olisiko tämä vähäln modernimpi -->
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="istuntoNumero" type="xs:string" />
+			<xs:element name="istuntoTyyppi"
+				type="publishing:IstuntoTyyppiKoodi" />
+			<xs:element name="istuntoAjankohta" type="xs:dateTime" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="KorjausAsiakirjaTyyppi">
+		<xs:sequence>
+			<xs:element name="asiakirjaTiedostoNimi" type="xs:string" />
+			<xs:element name="asiakirjaMetatiedot"
+				type="publishing:KorjausAsiakirjaMetatiedotTyyppi" />
+			<xs:element name="tiedosto" type="xs:base64Binary"
+				xmime:expectedContentTypes="application/octet-stream" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="KorjausAsiakirjaMetatiedotTyyppi">
+		<xs:sequence>
+			<xs:element name="asiaTunnus" type="xs:string" />
+			<xs:element name="asiaOtsikko" type="xs:string" />
+			<xs:element name="viimeinenPainotehtava" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Viimeisen painotehtävän tunniste
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="eduskuntaTunnus" type="xs:string" />
+			<xs:element name="saate" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Vakioteksti "Korjattu asiakirja"
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="asiakirjaNimi" type="xs:string" />
+			<xs:element name="asiakirjaTunnus" type="xs:string" />
+			<xs:element name="asiakirjaTyyppi" type="xs:string" />
+			<xs:element name="kieli" type="publishing:KieliKoodi" />
+			<xs:element name="versio" type="xs:string" />
+			<xs:element name="tallentaja"
+				type="publishing:YhteysTiedotTyyppi" minOccurs="0" maxOccurs="1" />
+			<xs:element name="asiakirjaTiedostoNimi" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ToimituksenTyyppiKoodi"
+		final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Taitto">
+				<xs:annotation>
+					<xs:documentation xml:lang="fi">Toimituksessa mukana taitettu lopputulos</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Taitto ja vedos">
+				<xs:annotation>
+					<xs:documentation xml:lang="fi">Toimituksessa mukana sekä taitettu lopputulos että vedos</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="IstuntoTyyppiKoodi"
+		final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="RV">
+				<xs:annotation>
+					<xs:documentation xml:lang="fi">Raha-asiain valiokunnan
+						istunto</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VN">
+				<xs:annotation>
+					<xs:documentation xml:lang="fi">Valtioneuvoston
+						yleisistunto</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TP">
+				<xs:annotation>
+					<xs:documentation xml:lang="fi">Tasavallan presidentin
+						esittely</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType
+		name="JulkaisuPyyntoAsiakirjaListaTyyppi">
+		<xs:sequence>
+			<xs:element name="asiakirja"
+				type="publishing:JulkaisuPyyntoAsiakirjaTyyppi" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="JulkaisuPyyntoAsiakirjaTyyppi">
+		<xs:sequence>
+			<xs:element name="asiakirjaTiedostoNimi" type="xs:string" />
+			<xs:element name="asiakirjaMetatiedot"
+				type="publishing:JulkaisuPyyntoAsiakirjaMetatiedotTyyppi" />
+			<xs:element name="tiedosto" type="xs:base64Binary"
+				xmime:expectedContentTypes="application/octet-stream"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType
+		name="JulkaisuPyyntoAsiakirjaMetatiedotTyyppi">
+		<xs:sequence>
+			<xs:element name="asiaTunnus" type="xs:string" />
+			<xs:element name="eduskuntaTunnus" type="xs:string" />
+			<xs:element name="asiaOtsikko" type="xs:string" />
+			<xs:element name="ministerio" type="xs:string" />
+			<xs:element name="esittelija"
+				type="publishing:YhteysTiedotTyyppi" />
+			<xs:element name="asiakirjaNimi" type="xs:string" />
+			<xs:element name="asiakirjaTunnus" type="xs:string" />
+			<xs:element name="asiakirjaTyyppi" type="xs:string" />
+			<xs:element name="tila"
+				type="publishing:AsiakirjanTilaKoodi" />
+			<xs:element name="kieli" type="publishing:KieliKoodi" />
+			<xs:element name="versio" type="xs:string" />
+			<xs:element name="tallentaja"
+				type="publishing:YhteysTiedotTyyppi" minOccurs="0" maxOccurs="1" />
+			<xs:element name="esitysmuoto"
+				type="publishing:EsitysMuotoKoodi" />
+			<xs:element name="asiakirjaTiedostoNimi" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="JulkaisuLupaAsiakirjaListaTyyppi">
+		<xs:sequence>
+			<xs:element name="asiakirja"
+				type="publishing:JulkaisuLupaAsiakirjaTyyppi" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="JulkaisuLupaAsiakirjaTyyppi">
+		<xs:sequence>
+			<xs:element name="asiakirjaTiedostoNimi" type="xs:string" />
+			<xs:element name="asiakirjaMetatiedot"
+				type="publishing:JulkaisuLupaAsiakirjaMetatiedotTyyppi" />
+			<xs:element name="tiedosto" type="xs:base64Binary"
+				xmime:expectedContentTypes="application/octet-stream"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType
+		name="JulkaisuLupaAsiakirjaMetatiedotTyyppi">
+		<xs:sequence>
+			<xs:element name="asiaTunnus" type="xs:string" />
+			<xs:element name="paatos"
+				type="publishing:PaatosTyyppiKoodi" />
+			<xs:element name="viimeinenPainotehtava" type="xs:string" />
+			<xs:element name="eduskuntaTunnus" type="xs:string" />
+			<xs:element name="asiakirjaNimi" type="xs:string" />
+			<xs:element name="asiakirjaTunnus" type="xs:string" />
+			<xs:element name="asiakirjaTyyppi" type="xs:string" />
+			<xs:element name="asiakirjaTiedostoNimi" type="xs:string" />
+			<xs:element name="tila"
+				type="publishing:AsiakirjanTilaKoodi" />
+			<xs:element name="kieli" type="publishing:KieliKoodi" />
+			<xs:element name="versio" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="JulkaisuPyyntoTyyppi">
+		<xs:sequence>
+			<xs:element name="tunniste" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="fi">
+						Painotehtävän tunniste, esim. VNK/2018/667-1. Tämän avulla
+						annetaan myös julkaisuluvat, tehdään korjaukset ja
+						tunnistetaan valmiit painotilaukset.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="asiaOtsikko" type="xs:string" />
+			<xs:element name="saate" type="xs:string" minOccurs="0" />
+			<xs:element name="pyynnonLaatu"
+				type="publishing:PyynnonLaatuKoodi" />
+			<xs:element name="asiatyyppi" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="fi">Asiatyypin nimi
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tilauksenTekija"
+				type="publishing:YhteysTiedotTyyppi" />
+			<xs:element name="julkaistavaViimeistaan" type="xs:date"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="fi">Jos kyseessä on
+						säädöskokoelma, tarvitaan</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="euTunnus" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="fi">Jos laatu
+						säädöskokoelma</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ekAsiakirjat" type="xs:string"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="fi">Jos laatu
+						säädöskokoelma</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sopimussarja"
+				type="publishing:SopimusSarjaKoodi" />
+			<xs:element name="ennakkolahetys" type="xs:boolean"
+				minOccurs="0" />
+			<xs:element name="vedoksia"
+				type="publishing:VedosTyyppiKoodi" />
+			<xs:element name="vedoksiaMaara"
+				type="publishing:VedosTyyppiKoodi" />
+			<!-- Tiedostojen lukumäärää ei tarvittane <xs:element name="tiedostojenLukumaara" 
+				type="xs:integer"/> -->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="PaatosTyyppiKoodi"
+		final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Painolupa" />
+			<xs:enumeration value="Ennakkotieto" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EsitysMuotoKoodi"
+		final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="XML" />
+			<xs:enumeration value="Alkuperäinen" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AsiakirjanTilaKoodi"
+		final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Korjattavana" />
+			<xs:enumeration value="Valmis" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="KieliKoodi" final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="fi" />
+			<xs:enumeration value="sv" />
+			<xs:enumeration value="" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VedosTyyppiKoodi"
+		final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Paperi" />
+			<xs:enumeration value="Taitettu Pdf" />
+			<xs:enumeration value="Ei" />
+			<xs:enumeration value="Muu" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="YhteysTiedotTyyppi">
+		<xs:sequence>
+			<xs:element name="etuNimi" type="xs:string" />
+			<xs:element name="sukuNimi" type="xs:string" />
+			<xs:element name="titteli" type="xs:string" />
+			<xs:element name="puhelinNumero" type="xs:string" />
+			<xs:element name="sahkoPosti" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SopimusSarjaKoodi"
+		final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Sopimussarja" />
+			<xs:enumeration value="Säädöskokoelma" />
+			<xs:enumeration value="Molemmat" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PyynnonLaatuKoodi"
+		final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Eduskuntakappaleet" />
+			<xs:enumeration value="Säädöskokoelmaan" />
+			<xs:enumeration value="Muu" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LahetyksenTyyppiKoodi"
+		final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Julkaisupyyntö" />
+			<xs:enumeration value="Julkaisulupa" />
+			<xs:enumeration value="Korjaus" />
+			<xs:enumeration value="Vastaus" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PaluuKoodiTyyppi"
+		final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="fi">OK</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="fi">Siirto epäonnistui
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation xml:lang="fi">Aineisto hylätty, esim.
+						XML-validointi epäonnistui</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="KuittausTyyppi">
+		<xs:sequence>
+			<xs:element name="paluuKoodi"
+				type="publishing:PaluuKoodiTyyppi" />
+			<xs:element name="selite" type="xs:string" />
+			<xs:element name="viesti" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

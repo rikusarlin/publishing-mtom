@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+	targetNamespace="http://www.publishing.fi/skeemat/vahva/2018/06/08" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:wsoap="http://schemas.xmlsoap.org/wsdl/soap12/" 
+	xmlns:whttp="http://www.w3.org/ns/wsdl/http" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:publishing="http://www.publishing.fi/skeemat/vahva/2018/06/08"
+	xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+	
+	<wsdl:types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:import namespace="http://www.publishing.fi/skeemat/vahva/2018/06/08"
+				schemaLocation="./PublishingService.xsd">
+			</xs:import>
+		</xs:schema>
+	</wsdl:types>
+
+	<wsdl:message name="JulkaisuPyyntoRequest">
+		<wsdl:part element="publishing:JulkaisuPyyntoRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="JulkaisuLupaRequest">
+		<wsdl:part element="publishing:JulkaisuLupaRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="KorjausRequest">
+		<wsdl:part element="publishing:KorjausRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="SiirtoResponse">
+		<wsdl:part element="publishing:SiirtoResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="HaeJulkaisutRequest">
+		<wsdl:part element="publishing:HaeJulkaisutRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="HaeJulkaisutResponse">
+		<wsdl:part element="publishing:HaeJulkaisutResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:portType name="publishingPort">
+		<wsdl:operation name="lahetaJulkaisuPyynto">
+			<wsdl:input message="publishing:JulkaisuPyyntoRequest"/>
+			<wsdl:output message="publishing:SiirtoResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="lahetaJulkaisuLupa">
+			<wsdl:input message="publishing:JulkaisuLupaRequest"/>
+			<wsdl:output message="publishing:SiirtoResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="lahetaKorjaus">
+			<wsdl:input message="publishing:KorjausRequest"/>
+			<wsdl:output message="publishing:SiirtoResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="haeJulkaisut">
+			<wsdl:input message="publishing:HaeJulkaisutRequest"/>
+			<wsdl:output message="publishing:HaeJulkaisutResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="publishingBinding" type="publishing:publishingPort">
+		<wsoap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="lahetaJulkaisuPyynto">
+			<wsoap:operation
+				soapAction="http://www.publishing.fi/skeemat/vahva/2018/06/08/Publishing/lahetaJulkaisuPyynto" />
+			<wsdl:input>
+				<wsoap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<wsoap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="lahetaJulkaisuLupa">
+			<wsoap:operation
+				soapAction="http://www.publishing.fi/skeemat/vahva/2018/06/08/Publishing/lahetaJulkaisuLupa" />
+			<wsdl:input>
+				<wsoap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<wsoap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="lahetaKorjaus">
+			<wsoap:operation
+				soapAction="http://www.publishing.fi/skeemat/vahva/2018/06/08/Publishing/lahetaKorjaus" />
+			<wsdl:input>
+				<wsoap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<wsoap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="haeJulkaisut">
+			<wsoap:operation
+				soapAction="http://www.publishing.fi/skeemat/vahva/2018/06/08/Publishing/haeJulkaisut"/>
+			<wsdl:input>
+				<wsoap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<wsoap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<wsdl:service name="vastaanotaAineistoService">
+		<wsdl:port binding="publishing:publishingBinding" name="publishingPort">
+			<wsoap:address
+				location="http://localhost:8080/apache-cfx-demo/services/publishing" />
+		</wsdl:port>
+	</wsdl:service>
+	
+</wsdl:definitions>

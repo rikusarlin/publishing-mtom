@@ -16,50 +16,50 @@
 		</xs:schema>
 	</wsdl:types>
 
-	<wsdl:message name="JulkaisuPyyntoRequest">
-		<wsdl:part element="publishing:JulkaisuPyyntoRequest" name="request" />
+	<wsdl:message name="PublishingRequestRequest">
+		<wsdl:part element="publishing:PublishingRequestRequest" name="request" />
 	</wsdl:message>
-	<wsdl:message name="JulkaisuLupaRequest">
-		<wsdl:part element="publishing:JulkaisuLupaRequest" name="request" />
+	<wsdl:message name="PublishingPermissionRequest">
+		<wsdl:part element="publishing:PublishingPermissionRequest" name="request" />
 	</wsdl:message>
-	<wsdl:message name="KorjausRequest">
-		<wsdl:part element="publishing:KorjausRequest" name="request" />
+	<wsdl:message name="CorrectionRequest">
+		<wsdl:part element="publishing:CorrectionRequest" name="request" />
 	</wsdl:message>
-	<wsdl:message name="SiirtoResponse">
-		<wsdl:part element="publishing:SiirtoResponse" name="response" />
+	<wsdl:message name="TransmissionResponse">
+		<wsdl:part element="publishing:TransmissionResponse" name="response" />
 	</wsdl:message>
-	<wsdl:message name="HaeJulkaisutRequest">
-		<wsdl:part element="publishing:HaeJulkaisutRequest" name="request" />
+	<wsdl:message name="FetchPublishedRequest">
+		<wsdl:part element="publishing:FetchPublishedRequest" name="request" />
 	</wsdl:message>
-	<wsdl:message name="HaeJulkaisutResponse">
-		<wsdl:part element="publishing:HaeJulkaisutResponse" name="response" />
+	<wsdl:message name="FetchPublishedResponse">
+		<wsdl:part element="publishing:FetchPublishedResponse" name="response" />
 	</wsdl:message>
 
 	<wsdl:portType name="publishingPort">
-		<wsdl:operation name="lahetaJulkaisuPyynto">
-			<wsdl:input message="publishing:JulkaisuPyyntoRequest"/>
-			<wsdl:output message="publishing:SiirtoResponse"/>
+		<wsdl:operation name="sendPublishingRequest">
+			<wsdl:input message="publishing:PublishingRequestRequest"/>
+			<wsdl:output message="publishing:TransmissionResponse"/>
 		</wsdl:operation>
-		<wsdl:operation name="lahetaJulkaisuLupa">
-			<wsdl:input message="publishing:JulkaisuLupaRequest"/>
-			<wsdl:output message="publishing:SiirtoResponse"/>
+		<wsdl:operation name="sendPublishingPermission">
+			<wsdl:input message="publishing:PublishingPermissionRequest"/>
+			<wsdl:output message="publishing:TransmissionResponse"/>
 		</wsdl:operation>
-		<wsdl:operation name="lahetaKorjaus">
-			<wsdl:input message="publishing:KorjausRequest"/>
-			<wsdl:output message="publishing:SiirtoResponse"/>
+		<wsdl:operation name="sendCorrection">
+			<wsdl:input message="publishing:CorrectionRequest"/>
+			<wsdl:output message="publishing:TransmissionResponse"/>
 		</wsdl:operation>
-		<wsdl:operation name="haeJulkaisut">
-			<wsdl:input message="publishing:HaeJulkaisutRequest"/>
-			<wsdl:output message="publishing:HaeJulkaisutResponse"/>
+		<wsdl:operation name="fetchPublished">
+			<wsdl:input message="publishing:FetchPublishedRequest"/>
+			<wsdl:output message="publishing:FetchPublishedResponse"/>
 		</wsdl:operation>
 	</wsdl:portType>
 
 	<wsdl:binding name="publishingBinding" type="publishing:publishingPort">
 		<wsoap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
-		<wsdl:operation name="lahetaJulkaisuPyynto">
+		<wsdl:operation name="sendPublishingRequest">
 			<wsoap:operation
-				soapAction="http://www.publishing.fi/skeemat/vahva/2018/06/08/Publishing/lahetaJulkaisuPyynto" />
+				soapAction="http://www.publishing.fi/skeemat/vahva/2018/06/08/Publishing/sendPublishingRequest" />
 			<wsdl:input>
 				<wsoap:body use="literal" />
 			</wsdl:input>
@@ -67,9 +67,9 @@
 				<wsoap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="lahetaJulkaisuLupa">
+		<wsdl:operation name="sendPublishingPermission">
 			<wsoap:operation
-				soapAction="http://www.publishing.fi/skeemat/vahva/2018/06/08/Publishing/lahetaJulkaisuLupa" />
+				soapAction="http://www.publishing.fi/skeemat/vahva/2018/06/08/Publishing/sendPublishingPermission" />
 			<wsdl:input>
 				<wsoap:body use="literal" />
 			</wsdl:input>
@@ -77,9 +77,9 @@
 				<wsoap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="lahetaKorjaus">
+		<wsdl:operation name="sendCorrection">
 			<wsoap:operation
-				soapAction="http://www.publishing.fi/skeemat/vahva/2018/06/08/Publishing/lahetaKorjaus" />
+				soapAction="http://www.publishing.fi/skeemat/vahva/2018/06/08/Publishing/sendCorrection" />
 			<wsdl:input>
 				<wsoap:body use="literal" />
 			</wsdl:input>
@@ -87,9 +87,9 @@
 				<wsoap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="haeJulkaisut">
+		<wsdl:operation name="fetchPublished">
 			<wsoap:operation
-				soapAction="http://www.publishing.fi/skeemat/vahva/2018/06/08/Publishing/haeJulkaisut"/>
+				soapAction="http://www.publishing.fi/skeemat/vahva/2018/06/08/Publishing/fetchPublished"/>
 			<wsdl:input>
 				<wsoap:body use="literal" />
 			</wsdl:input>
@@ -99,10 +99,10 @@
 		</wsdl:operation>
 	</wsdl:binding>
 	
-	<wsdl:service name="vastaanotaAineistoService">
+	<wsdl:service name="publishingService">
 		<wsdl:port binding="publishing:publishingBinding" name="publishingPort">
 			<wsoap:address
-				location="http://localhost:8080/apache-cfx-demo/services/publishing" />
+				location="http://localhost:8080/services/publishing" />
 		</wsdl:port>
 	</wsdl:service>
 	

@@ -12,8 +12,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
-import test.mtom.endpoint.VastaanotaAineistoServiceEndpoint;
+import test.mtom.endpoint.PublishingServiceEndpoint;
+import test.mtom.service.PdfGenerationService;
 
 @Configuration
 @ImportResource({ "classpath:META-INF/cxf/cxf.xml" })
@@ -27,12 +29,12 @@ public class Config {
 
 	@Bean
 	public EndpointImpl publishingServiceEndpoint(Bus cxfBus, 
-										VastaanotaAineistoServiceEndpoint vastaanotaAineistoServiceEndpoint,
 										@Value("${mtom-enabled}") Boolean mtomEnabled,
 										LoggingInInterceptor inInterceptor, 
 										LoggingOutInterceptor outInterceptor) {
 		
-		EndpointImpl endpoint = new EndpointImpl(cxfBus, vastaanotaAineistoServiceEndpoint);
+		PdfGenerationService pdfGenerationService = new PdfGenerationService();
+		EndpointImpl endpoint = new EndpointImpl(cxfBus, new PublishingServiceEndpoint(pdfGenerationService));
 		endpoint.getInInterceptors().add(inInterceptor);
 		endpoint.getOutInterceptors().add(outInterceptor);
 		endpoint.getProperties().put("mtom-enabled", mtomEnabled);
